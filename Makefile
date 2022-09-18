@@ -13,7 +13,7 @@ main1: program1/main.o
 	gcc -o $@ -L lib1 $< -lfoo
 
 plugin.so: plug/plugin.o
-	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $< -lc
+	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $< -L lib1 -lfoo
 
 libfoo.so.2.0.0: lib2/foo.o
 	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $< -lc
