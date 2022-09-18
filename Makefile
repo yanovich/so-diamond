@@ -3,8 +3,8 @@ all: libfoo.so.1.0.0 lib1/libfoo.so plugin.so main1 libfoo.so.2.0.0 lib2/libfoo.
 %.o: %.c
 	gcc -c -fPIC -I. $< -o $@
 
-libfoo.so.1.0.0: lib1/foo.o
-	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $< -lc
+libfoo.so.1.0.0: lib1/foo.o lib1/versions
+	gcc -shared -fPIC -Wl,--version-script=lib1/versions,-soname,$@ -o $@ $< -lc
 
 lib1/libfoo.so:
 	ln -s ../libfoo.so.1.0.0 lib1/libfoo.so
@@ -15,8 +15,8 @@ main1: program1/main.o
 plugin.so: plug/plugin.o
 	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $< -L lib1 -lfoo
 
-libfoo.so.2.0.0: lib2/foo.o
-	gcc -shared -fPIC -Wl,-soname,$@ -o $@ $< -lc
+libfoo.so.2.0.0: lib2/foo.o lib2/versions
+	gcc -shared -fPIC -Wl,--version-script=lib2/versions,-soname,$@ -o $@ $< -lc
 
 lib2/libfoo.so:
 	ln -s ../libfoo.so.2.0.0 lib2/libfoo.so
